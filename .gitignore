@@ -1,0 +1,9 @@
+# .gitignore
+venv/
+__pycache__/
+*.pyc
+.env
+storage/llm_cache/
+storage/jobs/
+storage/outputs/
+*.log
