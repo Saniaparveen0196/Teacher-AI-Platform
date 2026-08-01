@@ -90,4 +90,58 @@ class PeriodActivities(BaseModel):
     activities: List[ActivitySpec]
 
 class ActivityPlan(BaseModel):
-    periods: List[PeriodActivities]      
+    periods: List[PeriodActivities]     
+class MCQ(BaseModel):
+    question: str
+    options: List[str]           # exactly 4 options
+    correct_answer: str          # must match one of options exactly
+    explanation: str
+
+class ShortAnswerQuestion(BaseModel):
+    question: str
+    model_answer: str
+    rubric: str                  # brief scoring guidance
+
+class LongAnswerQuestion(BaseModel):
+    question: str
+    model_answer: str
+    rubric: str
+
+class NumericalProblem(BaseModel):
+    question: str
+    solution_steps: str
+    final_answer: str
+
+class PeriodAssessment(BaseModel):
+    period_number: int
+    mcqs: List[MCQ]
+    short_answer: List[ShortAnswerQuestion]
+    long_answer: List[LongAnswerQuestion]
+    numerical_problems: List[NumericalProblem]   # empty list if not applicable
+
+class AssessmentPlan(BaseModel):
+    periods: List[PeriodAssessment]   
+class LearningGap(BaseModel):
+    misconception: str
+    diagnostic_question: str      # a question a teacher can ask to detect this gap
+    severity: str                 # "Low" / "Medium" / "High"
+    remedial_action: str          # what the teacher should do if detected
+
+class PeriodGapAnalysis(BaseModel):
+    period_number: int
+    gaps: List[LearningGap]
+
+class GapAnalysisReport(BaseModel):
+    periods: List[PeriodGapAnalysis]   
+# app/models.py — ADD below GapAnalysisReport
+
+class ValidationIssue(BaseModel):
+    severity: str            # "Info" / "Warning" / "Critical"
+    category: str            # "schema" / "missing_content" / "hallucination" / "consistency"
+    description: str
+    location: Optional[str] = None   # e.g. "Period 3" or "Stage 5"
+
+class ValidationReport(BaseModel):
+    passed: bool              # True if no Critical issues
+    issues: List[ValidationIssue]
+    objectives_coverage_pct: float    # % of Stage 4 objectives actually covered downstream       

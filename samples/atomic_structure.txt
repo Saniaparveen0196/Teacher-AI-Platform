@@ -1,0 +1,131 @@
+Chapter 4
+Structure of the Atom
+
+In Chapter 3, we have learnt that atoms and molecules are the fundamental building blocks of matter. The existence of different kinds of matter is due to different atoms constituting them. Now the questions arise: (i) What makes the atom of one element different from the atom of another element? and (ii) Are atoms really indivisible, as proposed by Dalton, or are there smaller constituents inside the atom? We shall find out the answers to these questions in this chapter. We will learn about sub-atomic particles and the various models that have been proposed to explain how these particles are arranged within the atom.
+
+A major challenge before the scientists at the end of the 19th century was to reveal the structure of the atom as well as to explain its important properties. The elucidation of the structure of atoms is based on a series of experiments.
+
+One of the first indications that atoms are not indivisible, comes from studying static electricity and the condition under which electricity is conducted by different substances.
+
+4.1 Charged Particles in Matter
+
+For understanding the nature of charged particles in matter, let us carry out the following activities:
+A. Comb dry hair. Does the comb then attract small pieces of paper?
+B. Rub a glass rod with a silk cloth and bring the rod near an inflated balloon. Observe what happens.
+
+From these activities, can we conclude that on rubbing two objects together, they become electrically charged? Where does this charge come from? This question can be answered by knowing that an atom is divisible and consists of charged particles.
+
+Many scientists contributed in revealing the presence of charged particles in an atom. It was known by 1900 that the atom was not a simple, indivisible particle but contained at least one sub-atomic particle - the electron identified by J.J. Thomson. Even before the electron was identified, E. Goldstein in 1886 discovered the presence of new radiations in a gas discharge and called them canal rays. These rays were positively charged radiations which ultimately led to the discovery of another sub-atomic particle. This sub-atomic particle had a charge, equal in magnitude but opposite in sign to that of the electron. Its mass was approximately 2000 times as that of the electron. It was given the name of proton. In general, an electron is represented as 'e-' and a proton as 'p+'. The mass of a proton is taken as one unit and its charge as plus one. The mass of an electron is considered to be negligible and its charge is minus one.
+
+It seemed highly likely that an atom was composed of protons and electrons, mutually balancing their charges. It also appeared that the protons were in the interior of the atom, for whereas electrons could easily be peeled off but not protons. Now the big question was: what sort of structure did these particles of the atom form?
+
+4.2 The Structure of an Atom
+
+We have learnt Dalton's atomic theory in Chapter 3, which suggested that the atom was indivisible and indestructible. But the discovery of two fundamental particles (electrons and protons) inside the atom, led to the failure of this aspect of Dalton's atomic theory. It was then considered necessary to know how electrons and protons are arranged within an atom. For explaining this, many scientists proposed various atomic models. J.J. Thomson was the first one to propose a model for the structure of an atom.
+
+4.2.1 Thomson's Model of an Atom
+
+Thomson proposed the model of an atom to be similar to that of a Christmas pudding. The electrons, in a sphere of positive charge, were like currants (dry fruits) in a spherical Christmas pudding. We can also think of a watermelon, the positive charge in the atom is spread all over like the red edible part of the watermelon, while the electrons are studded in the positively charged sphere, like the seeds in the watermelon.
+
+Thomson proposed that:
+(i) An atom consists of a positively charged sphere and the electrons are embedded in it.
+(ii) The negative and positive charges are equal in magnitude. So, the atom as a whole is electrically neutral.
+
+Although Thomson's model explained that atoms are electrically neutral, the results of experiments carried out by other scientists could not be explained by this model.
+
+4.2.2 Rutherford's Model of an Atom
+
+Ernest Rutherford was interested in knowing how the electrons are arranged within an atom. Rutherford designed an experiment for this. In this experiment, fast moving alpha particles were made to fall on a thin gold foil.
+- He selected a gold foil because he wanted as thin a layer as possible. This gold foil was about 1000 atoms thick.
+- Alpha-particles are doubly-charged helium ions. Since they have a mass of 4 u, the fast-moving alpha-particles have a considerable amount of energy.
+- It was expected that alpha-particles would be deflected by the sub-atomic particles in the gold atoms. Since the alpha-particles were much heavier than the protons, he did not expect to see large deflections.
+
+But, the alpha-particle scattering experiment gave totally unexpected results. The following observations were made:
+(i) Most of the fast moving alpha-particles passed straight through the gold foil.
+(ii) Some of the alpha-particles were deflected by the foil by small angles.
+(iii) Surprisingly one out of every 12000 particles appeared to rebound.
+
+Following a similar reasoning, Rutherford concluded from the alpha-particle scattering experiment that:
+(i) Most of the space inside the atom is empty because most of the alpha-particles passed through the gold foil without getting deflected.
+(ii) Very few particles were deflected from their path, indicating that the positive charge of the atom occupies very little space.
+(iii) A very small fraction of alpha-particles were deflected by 180 degrees, indicating that all the positive charge and mass of the gold atom were concentrated in a very small volume within the atom.
+
+From the data he also calculated that the radius of the nucleus is about 10^5 times less than the radius of the atom.
+
+On the basis of his experiment, Rutherford put forward the nuclear model of an atom, which had the following features:
+(i) There is a positively charged centre in an atom called the nucleus. Nearly all the mass of an atom resides in the nucleus.
+(ii) The electrons revolve around the nucleus in circular paths.
+(iii) The size of the nucleus is very small as compared to the size of the atom.
+
+Drawbacks of Rutherford's model of the atom: The revolution of the electron in a circular orbit is not expected to be stable. Any particle in a circular orbit would undergo acceleration. During acceleration, charged particles would radiate energy. Thus, the revolving electron would lose energy and finally fall into the nucleus. If this were so, the atom should be highly unstable and hence matter would not exist in the form that we know. We know that atoms are quite stable.
+
+4.2.3 Bohr's Model of Atom
+
+In order to overcome the objections raised against Rutherford's model of the atom, Neils Bohr put forward the following postulates about the model of an atom:
+(i) Only certain special orbits known as discrete orbits of electrons, are allowed inside the atom.
+(ii) While revolving in discrete orbits the electrons do not radiate energy.
+
+These orbits or shells are called energy levels. These orbits or shells are represented by the letters K, L, M, N,... or the numbers, n=1,2,3,4,....
+
+4.2.4 Neutrons
+
+In 1932, J. Chadwick discovered another sub-atomic particle which had no charge and a mass nearly equal to that of a proton. It was eventually named as neutron. Neutrons are present in the nucleus of all atoms, except hydrogen. In general, a neutron is represented as 'n'. The mass of an atom is therefore given by the sum of the masses of protons and neutrons present in the nucleus.
+
+4.3 How are Electrons Distributed in Different Orbits (Shells)?
+
+The distribution of electrons into different orbits of an atom was suggested by Bohr and Bury. The following rules are followed for writing the number of electrons in different energy levels or shells:
+(i) The maximum number of electrons present in a shell is given by the formula 2n^2, where 'n' is the orbit number or energy level index. Hence the maximum number of electrons in different shells are as follows: first orbit or K-shell will be 2, second orbit or L-shell will be 8, third orbit or M-shell will be 18, fourth orbit or N-shell will be 32, and so on.
+(ii) The maximum number of electrons that can be accommodated in the outermost orbit is 8.
+(iii) Electrons are not accommodated in a given shell, unless the inner shells are filled. That is, the shells are filled in a step-wise manner.
+
+4.4 Valency
+
+We have learnt how the electrons in an atom are arranged in different shells/orbits. The electrons present in the outermost shell of an atom are known as the valence electrons. From the Bohr-Bury scheme, we also know that the outermost shell of an atom can accommodate a maximum of 8 electrons. It was observed that the atoms of elements, having a completely filled outermost shell show little chemical activity. In other words, their combining capacity or valency is zero. An outermost-shell, which had eight electrons was said to possess an octet. Atoms would thus react, so as to achieve an octet in the outermost shell. This was done by sharing, gaining or losing electrons. The number of electrons gained, lost or shared so as to make the octet of electrons in the outermost shell, gives us directly the combining capacity of the element, that is, the valency.
+
+For example, hydrogen/lithium/sodium atoms contain one electron each in their outermost shell, therefore each one of them can lose one electron. So, they are said to have valency of one. Magnesium has two electrons in its outermost shell and aluminium has three electrons in its outermost shell, so their valency is two and three respectively.
+
+If the number of electrons in the outermost shell of an atom is close to its full capacity, then valency is determined in a different way. For example, the fluorine atom has 7 electrons in the outermost shell, and its valency could be 7. But it is easier for fluorine to gain one electron instead of losing seven electrons. Hence, its valency is determined by subtracting seven electrons from the octet and this gives a valency of one for fluorine.
+
+4.5 Atomic Number and Mass Number
+
+4.5.1 Atomic Number
+
+We know that protons are present in the nucleus of an atom. It is the number of protons of an atom, which determines its atomic number. It is denoted by 'Z'. All atoms of an element have the same atomic number, Z. In fact, elements are defined by the number of protons they possess. For hydrogen, Z=1, because in hydrogen atom, only one proton is present in the nucleus. Similarly, for carbon, Z=6. Therefore, the atomic number is defined as the total number of protons present in the nucleus of an atom.
+
+4.5.2 Mass Number
+
+After studying the properties of the sub-atomic particles of an atom, we can conclude that mass of an atom is practically due to protons and neutrons alone. These are present in the nucleus of an atom. Hence protons and neutrons are also called nucleons. Therefore, the mass of an atom resides in its nucleus. For example, mass of carbon is 12u because it has 6 protons and 6 neutrons, 6u + 6u = 12u. Similarly, the mass of aluminium is 27u (13 protons + 14 neutrons). The mass number is defined as the sum of the total number of protons and neutrons present in the nucleus of an atom.
+
+4.6 Isotopes
+
+In nature, a number of atoms of some elements have been identified, which have the same atomic number but different mass numbers. For example, take the case of hydrogen atom, it has three atomic species, namely protium, deuterium, and tritium. The atomic number of each one is 1, but the mass number is 1, 2 and 3, respectively. Other such examples are carbon-12 and carbon-14, and chlorine-35 and chlorine-37.
+
+On the basis of these examples, isotopes are defined as the atoms of the same element, having the same atomic number but different mass numbers.
+
+Many elements consist of a mixture of isotopes. Each isotope of an element is a pure substance. The chemical properties of isotopes are similar but their physical properties are different.
+
+Chlorine occurs in nature in two isotopic forms, with masses 35u and 37u in the ratio of 3:1. The mass of an atom of any natural element is taken as the average mass of all the naturally occurring atoms of that element. The average atomic mass of chlorine atom, on the basis of this data, works out to be 35.5u.
+
+Applications: Since the chemical properties of all the isotopes of an element are the same, normally we are not concerned about taking a mixture. But some isotopes have special properties which find them useful in various fields. Some of them are:
+(i) An isotope of uranium is used as a fuel in nuclear reactors.
+(ii) An isotope of cobalt is used in the treatment of cancer.
+(iii) An isotope of iodine is used in the treatment of goitre.
+
+4.6.1 Isobars
+
+Let us consider two elements - calcium, atomic number 20, and argon, atomic number 18. The number of electrons in these atoms is different, but the mass number of both these elements is 40. That is, the total number of nucleons is the same in the atoms of this pair of elements. Atoms of different elements with different atomic numbers, which have the same mass number, are known as isobars.
+
+Summary:
+- Credit for the discovery of electron and proton goes to J.J. Thomson and E. Goldstein, respectively.
+- J.J. Thomson proposed that electrons are embedded in a positive sphere.
+- Rutherford's alpha-particle scattering experiment led to the discovery of the atomic nucleus.
+- Rutherford's model of the atom proposed that a very tiny nucleus is present inside the atom and electrons revolve around this nucleus. The stability of the atom could not be explained by this model.
+- Neils Bohr's model of the atom was more successful. He proposed that electrons are distributed in different shells with discrete energy around the nucleus. If the atomic shells are complete, then the atom will be stable and less reactive.
+- J. Chadwick discovered presence of neutrons in the nucleus of an atom. So, the three sub-atomic particles of an atom are: electrons, protons and neutrons. Electrons are negatively charged, protons are positively charged and neutrons have no charge.
+- Shells of an atom are designated as K, L, M, N.
+- Valency is the combining capacity of an atom.
+- The atomic number of an element is the same as the number of protons in the nucleus of its atom.
+- The mass number of an atom is equal to the number of nucleons in its nucleus.
+- Isotopes are atoms of the same element, which have different mass numbers.
+- Isobars are atoms having the same mass number but different atomic numbers.
+- Elements are defined by the number of protons they possess.
