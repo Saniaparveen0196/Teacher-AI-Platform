@@ -144,4 +144,20 @@ class ValidationIssue(BaseModel):
 class ValidationReport(BaseModel):
     passed: bool              # True if no Critical issues
     issues: List[ValidationIssue]
-    objectives_coverage_pct: float    # % of Stage 4 objectives actually covered downstream       
+    objectives_coverage_pct: float    # % of Stage 4 objectives actually covered downstream
+class TKPMetadata(BaseModel):
+    source_filename: str
+    generated_at: str          # ISO timestamp
+    target_periods: int
+    period_duration_minutes: int
+
+class TeacherKnowledgePackage(BaseModel):
+    metadata: TKPMetadata
+    classification: DocumentClassification
+    knowledge: KnowledgeExtraction
+    teaching_plan: TeachingPlan
+    classroom_content: ClassroomContent
+    activity_plan: ActivityPlan
+    assessment_plan: AssessmentPlan
+    gap_analysis: GapAnalysisReport
+    validation_report: ValidationReport           
