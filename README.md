@@ -4,7 +4,7 @@ An AI-powered system that converts raw educational documents (PDF, DOCX, PPTX, T
 
 **Live demo:** https://teacher-ai-platform-frontend.onrender.com
 **Backend API:** https://teacher-ai-platform-9mg3.onrender.com
-**Repository:** [YOUR_GITHUB_URL_HERE]
+**Repository:** https://github.com/Saniaparveen0196/Teacher-AI-Platform
 
 ---
 
