@@ -1,4 +1,4 @@
-# app/parsers/docx_parser.py
+
 """
 Stage 1 — Document Intelligence: DOCX parser.
 Word has real heading styles, so no regex guessing needed here.

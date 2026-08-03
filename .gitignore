@@ -7,3 +7,4 @@ storage/llm_cache/
 storage/jobs/
 storage/outputs/
 *.log
+storage/uploads/

@@ -30,10 +30,16 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "storage", "outputs")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-def _run_job_in_background(job_id, file_path, source_filename, target_periods, period_duration_minutes):
+def _run_job_in_background(job_id: str, file_path: str, source_filename: str,
+                            target_periods: int, period_duration_minutes: int,
+                            curriculum_board: str, target_language: str):
     set_running(job_id)
     try:
-        for event in run_pipeline(file_path, source_filename, target_periods, period_duration_minutes):
+        for event in run_pipeline(file_path, source_filename, target_periods,
+                                   period_duration_minutes, curriculum_board, target_language):
+            if "error" in event:
+                set_error(job_id, event["error"])
+                return
             append_event(job_id, event)
     except Exception as e:
         set_error(job_id, str(e))
@@ -49,6 +55,8 @@ async def create_pipeline_job(
     file: UploadFile = File(...),
     target_periods: int = Form(5),
     period_duration_minutes: int = Form(40),
+    curriculum_board: str = Form(None),
+    target_language: str = Form(None),
 ):
     ext = os.path.splitext(file.filename)[1].lower()
     if ext not in (".pdf", ".docx", ".pptx", ".txt", ".md"):
@@ -61,10 +69,12 @@ async def create_pipeline_job(
 
     thread = threading.Thread(
         target=_run_job_in_background,
-        args=(job_id, saved_path, file.filename, target_periods, period_duration_minutes),
+        args=(job_id, saved_path, file.filename, target_periods, period_duration_minutes,
+              curriculum_board, target_language),
         daemon=True,
     )
     thread.start()
+
     return {"job_id": job_id}
 
 

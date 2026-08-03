@@ -3,9 +3,6 @@
 Stage 3 — Knowledge Extraction.
 The most structurally important stage in the pipeline: every stage from
 Stage 4 onward is built entirely on top of this output.
-
-Input size and output token budget are both capped to stay under Groq's
-free-tier TPM limit (12,000 tokens/minute on llama-3.1-8b-instant).
 """
 from app.llm_client import generate_json
 from app.models import KnowledgeExtraction
@@ -45,12 +42,9 @@ Every object in every list MUST use exactly these field names:
 
 
 def _build_extraction_text(parsed_doc: dict, max_chars: int = 9000) -> str:
-    """Near-full document text, capped to stay within the LLM's TPM budget."""
     return truncate_text(parsed_doc["raw_text"], max_chars)
 
 
-# Maps common LLM field-name synonyms -> our canonical schema field names.
-# Cheap insurance against structured-output drift.
 _FIELD_ALIASES = {
     "examples": {"example": "description", "text": "description", "concept": "relates_to_concept"},
     "common_misconceptions": {
@@ -102,7 +96,7 @@ Full document text:
 
 Extract the complete structured knowledge representation as specified."""
 
-    result = generate_json(SYSTEM_PROMPT, user_prompt, temperature=0.3,  max_output_tokens=3072)
+    result = generate_json(SYSTEM_PROMPT, user_prompt, temperature=0.3, max_output_tokens=4096)
     result = _normalize_result(result)
     validated = KnowledgeExtraction(**result)
     return validated.model_dump()

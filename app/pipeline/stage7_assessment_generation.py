@@ -1,17 +1,11 @@
 # app/pipeline/stage7_assessment_generation.py
 """
 Stage 7 — Assessment Generation.
-One call per period (same reasoning as Stage 5/6). Numerical problems are
-conditional — empty list for non-quantitative subjects, same rule as Stage 3's
-formulae field.
-
-If a response gets truncated before finishing every section (can happen on
-dense periods, e.g. a consolidation period covering many concepts), missing
-sections default to empty lists rather than crashing the whole pipeline run.
 """
 import time
 from app.llm_client import generate_json
 from app.models import PeriodAssessment, AssessmentPlan
+from app.utils import build_context_suffix
 
 SYSTEM_PROMPT = """You are an expert assessment designer who creates fair,
 well-calibrated classroom assessments.
@@ -53,21 +47,22 @@ Respond ONLY with a JSON object matching EXACTLY this structure:
 
 
 def _fill_missing_sections(result: dict) -> dict:
-    """If the model's response got truncated before finishing every
-    section, default missing ones to empty lists rather than crashing —
-    a thinner assessment for one period beats losing the whole pipeline run."""
     for field in ["mcqs", "short_answer", "long_answer", "numerical_problems"]:
         result.setdefault(field, [])
     return result
 
 
-def _generate_period_assessment(period: dict, classification: dict) -> dict:
+def _generate_period_assessment(period: dict, classification: dict,
+                                 curriculum_board: str = None, target_language: str = None) -> dict:
+    context_suffix = build_context_suffix(curriculum_board, target_language)
+
     user_prompt = f"""Subject: {classification['subject']} | Grade: {classification['grade_level']}
 Category: {classification['category']}
 
 Period {period['period_number']}: {period['title']}
 Learning objectives: {period['learning_objectives']}
 Concepts covered: {period['concepts_covered']}
+{context_suffix}
 
 Generate the complete assessment set as specified."""
 
@@ -77,10 +72,11 @@ Generate the complete assessment set as specified."""
     return PeriodAssessment(**result).model_dump()
 
 
-def generate_assessments(teaching_plan: dict, classification: dict) -> dict:
+def generate_assessments(teaching_plan: dict, classification: dict,
+                          curriculum_board: str = None, target_language: str = None) -> dict:
     period_results = []
     for period in teaching_plan["periods"]:
-        result = _generate_period_assessment(period, classification)
+        result = _generate_period_assessment(period, classification, curriculum_board, target_language)
         period_results.append(result)
         time.sleep(2)
 

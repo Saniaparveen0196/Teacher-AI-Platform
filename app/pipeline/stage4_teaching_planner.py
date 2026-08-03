@@ -1,14 +1,11 @@
 # app/pipeline/stage4_teaching_planner.py
 """
 Stage 4 — Teaching Planner.
-Converts extracted knowledge into a multi-period teaching sequence. Unlike
-Stages 2-3 (one flat JSON object), this produces an ORDERED sequence where
-later periods depend on earlier ones — so we ask for the whole plan in one
-LLM call rather than looping period-by-period (cheaper, and avoids
-inconsistency/repetition between periods that separate calls would risk).
+Converts extracted knowledge into a multi-period teaching sequence.
 """
 from app.llm_client import generate_json
 from app.models import TeachingPlan
+from app.utils import build_context_suffix
 
 SYSTEM_PROMPT = """You are an expert instructional designer who plans
 multi-period teaching sequences for classroom teachers.
@@ -49,7 +46,10 @@ Respond ONLY with a JSON object matching EXACTLY this structure:
 
 
 def plan_teaching_sequence(knowledge: dict, classification: dict,
-                            target_periods: int = 5, period_duration_minutes: int = 40) -> dict:
+                            target_periods: int = 5, period_duration_minutes: int = 40,
+                            curriculum_board: str = None, target_language: str = None) -> dict:
+    context_suffix = build_context_suffix(curriculum_board, target_language)
+
     user_prompt = f"""Topic: {classification['topic']}
 Subject: {classification['subject']}
 Grade level: {classification['grade_level']}
@@ -68,6 +68,7 @@ Concepts (name: explanation):
 {[(c['name'], c['explanation']) for c in knowledge['concepts']]}
 
 Definitions (terms only, for reference): {[d['term'] for d in knowledge['definitions']]}
+{context_suffix}
 
 Produce the multi-period teaching plan as specified."""
 

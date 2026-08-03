@@ -1,15 +1,11 @@
 # app/pipeline/stage6_activity_generation.py
 """
 Stage 6 — Activity Generation.
-Elaborates the brief activity names Stage 5 already proposed into full specs
-(type, duration, materials, instructions, success criteria) — rather than
-inventing new activities from scratch, which would risk contradicting what
-Stage 5's teacher script already set up. One call per period (not per
-activity) to keep call count in line with Stage 5.
 """
 import time
 from app.llm_client import generate_json
 from app.models import ActivitySpec, PeriodActivities, ActivityPlan
+from app.utils import build_context_suffix
 
 SYSTEM_PROMPT = """You are an expert instructional designer who turns brief
 classroom activity ideas into complete, ready-to-run activity specifications
@@ -49,22 +45,26 @@ Respond ONLY with a JSON object matching EXACTLY this structure:
 
 
 def _generate_period_activities(period_number: int, activity_names: list,
-                                 period_duration_minutes: int, classification: dict) -> dict:
+                                 period_duration_minutes: int, classification: dict,
+                                 curriculum_board: str = None, target_language: str = None) -> dict:
+    context_suffix = build_context_suffix(curriculum_board, target_language)
+
     user_prompt = f"""Subject: {classification['subject']} | Grade: {classification['grade_level']}
 Period {period_number}, total duration: {period_duration_minutes} minutes
 
 Activity ideas to elaborate:
 {activity_names}
+{context_suffix}
 
 Produce the full activity specifications as specified."""
 
     result = generate_json(SYSTEM_PROMPT, user_prompt, temperature=0.5, max_output_tokens=1024)
-    result["period_number"] = period_number  # guard in case the model omits/misplaces it
+    result["period_number"] = period_number
     return PeriodActivities(**result).model_dump()
 
 
-def generate_activities(teaching_plan: dict, classroom_content: dict, classification: dict) -> dict:
-    # Build a quick lookup: period_number -> its brief classroom_activities list
+def generate_activities(teaching_plan: dict, classroom_content: dict, classification: dict,
+                         curriculum_board: str = None, target_language: str = None) -> dict:
     content_by_period = {p["period_number"]: p for p in classroom_content["periods"]}
 
     period_results = []
@@ -80,7 +80,8 @@ def generate_activities(teaching_plan: dict, classroom_content: dict, classifica
             continue
 
         result = _generate_period_activities(
-            period_number, activity_names, period["duration_minutes"], classification
+            period_number, activity_names, period["duration_minutes"], classification,
+            curriculum_board, target_language
         )
         period_results.append(result)
         time.sleep(2)

@@ -1,13 +1,11 @@
 # app/pipeline/stage8_gap_analysis.py
 """
 Stage 8 — Learning Gap Analysis.
-Builds on Stage 3's common_misconceptions (topic-inherent) by adding
-actionability per period: diagnostic questions, severity, remedial actions.
-Same one-call-per-period pattern as Stages 5-7.
 """
 import time
 from app.llm_client import generate_json
 from app.models import PeriodGapAnalysis, GapAnalysisReport
+from app.utils import build_context_suffix
 
 SYSTEM_PROMPT = """You are an expert educational diagnostician who identifies
 where students commonly go wrong and designs ways for teachers to catch and
@@ -49,13 +47,15 @@ Respond ONLY with a JSON object matching EXACTLY this structure:
 """
 
 
-def _generate_period_gaps(period: dict, known_misconceptions: list, classification: dict) -> dict:
+def _generate_period_gaps(period: dict, known_misconceptions: list, classification: dict,
+                           curriculum_board: str = None, target_language: str = None) -> dict:
     covered = set(c.lower() for c in period["concepts_covered"])
     relevant_known = [
         m for m in known_misconceptions
         if any(concept in m["misconception"].lower() or m["misconception"].lower() in concept
                for concept in covered)
     ]
+    context_suffix = build_context_suffix(curriculum_board, target_language)
 
     user_prompt = f"""Subject: {classification['subject']} | Grade: {classification['grade_level']}
 
@@ -65,6 +65,7 @@ Learning objectives: {period['learning_objectives']}
 
 Known misconceptions associated with this topic (from prior document analysis):
 {relevant_known if relevant_known else "None specifically matched — identify likely ones yourself."}
+{context_suffix}
 
 Generate the gap analysis for this period as specified."""
 
@@ -73,12 +74,14 @@ Generate the gap analysis for this period as specified."""
     return PeriodGapAnalysis(**result).model_dump()
 
 
-def analyze_learning_gaps(teaching_plan: dict, knowledge: dict, classification: dict) -> dict:
+def analyze_learning_gaps(teaching_plan: dict, knowledge: dict, classification: dict,
+                           curriculum_board: str = None, target_language: str = None) -> dict:
     known_misconceptions = knowledge.get("common_misconceptions", [])
 
     period_results = []
     for period in teaching_plan["periods"]:
-        result = _generate_period_gaps(period, known_misconceptions, classification)
+        result = _generate_period_gaps(period, known_misconceptions, classification,
+                                        curriculum_board, target_language)
         period_results.append(result)
         time.sleep(2)
 

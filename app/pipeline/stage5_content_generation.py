@@ -1,17 +1,11 @@
 # app/pipeline/stage5_content_generation.py
 """
 Stage 5 — Classroom Content Generation.
-Loops ONE call PER PERIOD (each period's content is large and mostly
-independent, so batching all periods into one call would blow the token
-budget). Only that period's relevant knowledge slice is sent per call.
-
-Prior periods' mentor moments are passed forward so later periods don't
-generate near-duplicate anecdotes — the one real cost of generating
-periods independently instead of in one big call.
 """
 import time
 from app.llm_client import generate_json
 from app.models import PeriodContent, ClassroomContent
+from app.utils import build_context_suffix
 
 SYSTEM_PROMPT = """You are an expert classroom teacher and instructional
 content writer. Given a single lesson period's plan and the relevant subject
@@ -52,22 +46,20 @@ Respond ONLY with a JSON object matching EXACTLY this structure:
 
 
 def _relevant_knowledge_slice(period: dict, knowledge: dict) -> dict:
-    """Only pull concepts/definitions/examples this period actually covers,
-    keeping each call's input small."""
     covered = set(c.lower() for c in period["concepts_covered"])
-
     concepts = [c for c in knowledge["concepts"] if c["name"].lower() in covered]
     definitions = [d for d in knowledge["definitions"]
                    if any(term in d["term"].lower() or d["term"].lower() in term for term in covered)]
     examples = [e for e in knowledge["examples"]
                 if e.get("relates_to_concept") and e["relates_to_concept"].lower() in covered]
-
     return {"concepts": concepts, "definitions": definitions, "examples": examples}
 
 
 def _generate_single_period_content(period: dict, knowledge: dict, classification: dict,
-                                     used_mentor_moments: list) -> dict:
+                                     used_mentor_moments: list,
+                                     curriculum_board: str = None, target_language: str = None) -> dict:
     slice_ = _relevant_knowledge_slice(period, knowledge)
+    context_suffix = build_context_suffix(curriculum_board, target_language)
 
     avoid_note = ""
     if used_mentor_moments:
@@ -86,23 +78,28 @@ Relevant concepts: {slice_['concepts']}
 Relevant definitions: {slice_['definitions']}
 Relevant examples: {slice_['examples']}
 {avoid_note}
+{context_suffix}
 
 Generate the complete classroom content for this period as specified."""
 
     result = generate_json(SYSTEM_PROMPT, user_prompt, temperature=0.6, max_output_tokens=1536)
-    result["period_number"] = period["period_number"]  # guard in case the model omits/misplaces it
+    result["period_number"] = period["period_number"]
     return PeriodContent(**result).model_dump()
 
 
-def generate_classroom_content(teaching_plan: dict, knowledge: dict, classification: dict) -> dict:
+def generate_classroom_content(teaching_plan: dict, knowledge: dict, classification: dict,
+                                curriculum_board: str = None, target_language: str = None) -> dict:
     period_contents = []
     used_mentor_moments = []
 
     for period in teaching_plan["periods"]:
-        content = _generate_single_period_content(period, knowledge, classification, used_mentor_moments)
+        content = _generate_single_period_content(
+            period, knowledge, classification, used_mentor_moments,
+            curriculum_board, target_language
+        )
         period_contents.append(content)
         used_mentor_moments.append(content["mentor_moment"])
-        time.sleep(2)  # small pacing gap between calls to stay under per-minute token limits
+        time.sleep(2)
 
     validated = ClassroomContent(periods=period_contents)
     return validated.model_dump()

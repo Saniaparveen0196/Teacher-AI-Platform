@@ -25,9 +25,11 @@ class Concept(BaseModel):
     name: str
     explanation: str
 
+
 class Definition(BaseModel):
     term: str
     definition: str
+
 
 class Formula(BaseModel):
     name: str
@@ -56,20 +58,20 @@ class Period(BaseModel):
     period_number: int
     title: str
     duration_minutes: int
-    learning_objectives: List[str]      # subset relevant to this period
-    concepts_covered: List[str]         # names, referencing Stage 3 concepts
-    sequencing_rationale: str           # why this content goes here / this order
+    learning_objectives: List[str]      
+    concepts_covered: List[str]         
+    sequencing_rationale: str           
 
 class TeachingPlan(BaseModel):
     total_periods: int
     periods: List[Period]
-    overall_sequencing_notes: str           # 0-1
+    overall_sequencing_notes: str           
 class PeriodContent(BaseModel):
     period_number: int
     entry_ticket: str
     teacher_script: str
     blackboard_notes: str
-    classroom_activities: List[str]     # brief activity names/descriptions; Stage 6 elaborates these
+    classroom_activities: List[str]     
     checkpoint_questions: List[str]
     exit_ticket: str
     homework: str
@@ -150,6 +152,8 @@ class TKPMetadata(BaseModel):
     generated_at: str          # ISO timestamp
     target_periods: int
     period_duration_minutes: int
+    curriculum_board: Optional[str] = None
+    target_language: Optional[str] = None
 
 class TeacherKnowledgePackage(BaseModel):
     metadata: TKPMetadata
@@ -160,4 +164,5 @@ class TeacherKnowledgePackage(BaseModel):
     activity_plan: ActivityPlan
     assessment_plan: AssessmentPlan
     gap_analysis: GapAnalysisReport
-    validation_report: ValidationReport           
+    validation_report: ValidationReport  
+

@@ -26,11 +26,10 @@ _styles.add(ParagraphStyle(name="OptionCustom", fontSize=10, leading=14, leftInd
 
 
 def _p(text: str, style: str = "BodyCustom"):
-    """Escape and wrap text as a Paragraph flowable. Only escapes raw &/<atml:cite index=">, "
-    doesn't inject HTML entities like &nbsp; — use reportlab's leftIndent
-    for indentation instead, since &nbsp; gets double-escaped otherwise."""
+    """Escape and wrap text as a Paragraph flowable. Escapes raw &/</>,
+    then re-enables the specific inline tags we intentionally use (<b>, <i>)
+    — avoids &nbsp;-style entities getting double-escaped."""
     safe = str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    # Re-enable the specific inline tags we intentionally use (<b>, <i>) after escaping
     safe = safe.replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>")
     safe = safe.replace("&lt;i&gt;", "<i>").replace("&lt;/i&gt;", "</i>")
     return Paragraph(safe, _styles[style])
@@ -106,15 +105,6 @@ def export_teacher_guide_pdf(tkp: dict, output_path: str) -> str:
 
     k = tkp["knowledge"]
 
-    story.append(_p("Core Concepts", "H2Custom"))
-    for c in k["concepts"]:
-        story.append(_p(c["name"], "H3Custom"))
-        story.append(_p(c["explanation"]))
-
-    if k["definitions"]:
-        story.append(_p("Key Definitions", "H2Custom"))
-        for d in k["definitions"]:
-            story.append(_p(f"<b>{d['term']}</b>: {d['definition']}"))
 
     if k["formulae"]:
         story.append(_p("Formulae", "H2Custom"))
