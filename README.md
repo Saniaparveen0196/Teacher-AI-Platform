@@ -29,7 +29,7 @@ Upload a document (e.g. an NCERT textbook chapter), and the system:
 |---|-------|---------------|
 | 1 | Document Intelligence | Format-specific parsers (PDF/DOCX/PPTX/TXT) → one common structural shape. Includes OCR fallback (Tesseract + PyMuPDF) for scanned PDFs. |
 | 2 | Educational Classification | Subject, grade, difficulty, topic, category, language |
-| 3 | Knowledge Extraction | RAG-based (TF-IDF retrieval over chunked document) extraction of learning objectives, prerequisites, concepts, definitions, formulae, examples, misconceptions — each concept/definition tagged with its source section for traceability  |
+| 3 | Knowledge Extraction | RAG-based (TF-IDF retrieval over chunked document) extraction of learning objectives, prerequisites, concepts, definitions, formulae, examples, misconceptions — each concept/definition tagged with its source section for traceability.  |
 | 4 | Teaching Planner | Multi-period sequence; period count adapts to content volume, not fixed at 5 |
 | 5 | Classroom Content Generation | Entry tickets, teacher scripts, blackboard notes, checkpoint questions, exit tickets, homework, mentor moments |
 | 6 | Activity Generation | Elaborates Stage 5's activity ideas into full specs (materials, instructions, success criteria) |
