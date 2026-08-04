@@ -29,7 +29,7 @@ Upload a document (e.g. an NCERT textbook chapter), and the system:
 |---|-------|---------------|
 | 1 | Document Intelligence | Format-specific parsers (PDF/DOCX/PPTX/TXT) → one common structural shape. Includes OCR fallback (Tesseract + PyMuPDF) for scanned PDFs. |
 | 2 | Educational Classification | Subject, grade, difficulty, topic, category, language |
-| 3 | Knowledge Extraction | Learning objectives, prerequisites, concepts, definitions, formulae, examples, misconceptions |
+| 3 | Knowledge Extraction | RAG-based (TF-IDF retrieval over chunked document) extraction of learning objectives, prerequisites, concepts, definitions, formulae, examples, misconceptions — each concept/definition tagged with its source section for traceability  |
 | 4 | Teaching Planner | Multi-period sequence; period count adapts to content volume, not fixed at 5 |
 | 5 | Classroom Content Generation | Entry tickets, teacher scripts, blackboard notes, checkpoint questions, exit tickets, homework, mentor moments |
 | 6 | Activity Generation | Elaborates Stage 5's activity ideas into full specs (materials, instructions, success criteria) |
@@ -43,7 +43,11 @@ Upload a document (e.g. an NCERT textbook chapter), and the system:
 ## Orchestration approach: custom pipeline, not LangChain
 
 This system deliberately does **not** use LangChain, LlamaIndex, or a similar agent framework. Reasoning:
+## RAG & source traceability
 
+Stage 3 (Knowledge Extraction) uses retrieval-augmented generation: the parsed document is chunked by section (`app/rag.py`), indexed with TF-IDF, and the chunks most relevant to the document's classified subject/topic are retrieved and passed to the LLM — rather than blindly truncating the document to fit the token budget. This means content relevant to the actual topic is prioritized regardless of where it sits in the document, and every extracted concept and definition carries a `source_section` field pointing back to the originating heading in the source document, surfaced in both the Streamlit UI and the Teacher Guide PDF.
+
+**Why TF-IDF instead of dense embeddings:** a typical RAG stack uses `sentence-transformers` + a vector store (FAISS/Chroma), but that pulls in PyTorch — a large dependency that risked the same dependency-resolution failure already hit once during deployment (see Known Limitations). TF-IDF/cosine similarity (`scikit-learn`) is lightweight, has no GPU/large-model dependency, and is well-suited to single-document retrieval at chapter scale, where lexical overlap is a strong relevance signal. This was a deliberate tradeoff of retrieval sophistication for deployment reliability on a free-tier host.
 - **Fine-grained token budget control.** Running on a free-tier LLM API (Groq) with strict per-minute and per-day token limits, every stage needed a hand-tuned `max_output_tokens` and input-truncation strategy. A framework's abstractions would obscure exactly where tokens are being spent.
 - **Per-stage caching.** A custom disk cache (`app/cache.py`), keyed on exact prompt content, means re-running any stage during development costs zero tokens on a cache hit. This was essential for iterating quickly within free-tier rate limits, and doubles as a "Performance Optimization" bonus feature.
 - **Explicit schema validation at every boundary.** Every stage's raw LLM output is normalized (handling field-name synonyms an LLM might use) and validated against a Pydantic schema before being passed downstream — catching malformed output immediately rather than propagating errors silently through a framework's internal state.
@@ -63,14 +67,7 @@ The tradeoff: more code written by hand (prompt templates, retry logic, normaliz
 
 ---
 
-## Known limitations
 
-- **OCR reliability**: scanned-PDF support (Tesseract + PyMuPDF rendering) was implemented and tested, but during development one real-world scanned PDF was found to have corrupted internal image streams that neither Poppler nor MuPDF could render — a file-level issue, not a pipeline bug. Recommend testing OCR against a variety of real scanned files before production use.
-- **Stage 9 hallucination checks currently review `classroom_content` only**, not `assessment_plan`. Extending the review to spot-check assessment answer-key correctness is a natural next step.
-- **Streamlit polls rather than streams**: the backend fully supports SSE (`/jobs/{id}/stream`), but Streamlit has no native SSE client, so the frontend polls `/jobs/{id}/result` with incremental progress feedback instead of consuming the live stream. A dedicated frontend (React + EventSource) would give smoother live progress.
-- **Generation time**: a 5-period document makes ~20-24 sequential LLM calls (content/activities/assessments/gaps per period), taking roughly 2-4 minutes on the free-tier API used for this project.
-
----
 
 ## Setup — running locally
 
@@ -114,6 +111,7 @@ Two sample `TeacherKnowledgePackage.json` files are in `/samples`, demonstrating
 
 ## Tech stack
 
+- **Retrieval**: `scikit-learn` (TF-IDF vectorization + cosine similarity) for RAG-based context selection in Stage 3
 - **Backend**: FastAPI, Pydantic, `sse-starlette`
 - **LLM**: Groq (`llama-3.3-70b-versatile`) — free-tier, provider-agnostic via a single gateway module (`app/llm_client.py`), swappable to any provider by editing one file
 - **Parsing**: `pdfplumber`, `python-docx`, `python-pptx`, with OCR fallback via `pytesseract` + PyMuPDF
