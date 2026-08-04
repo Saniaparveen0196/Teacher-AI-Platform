@@ -24,11 +24,13 @@ class DocumentClassification(BaseModel):
 class Concept(BaseModel):
     name: str
     explanation: str
+    source_section: Optional[str] = None
 
 
 class Definition(BaseModel):
     term: str
     definition: str
+    source_section: Optional[str] = None
 
 
 class Formula(BaseModel):

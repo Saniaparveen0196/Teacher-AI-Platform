@@ -178,10 +178,14 @@ if st.session_state.tkp:
         st.markdown("**Concepts**")
         for c in k["concepts"]:
             st.write(f"- **{c['name']}**: {c['explanation']}")
+            if c.get("source_section"):
+                st.caption(f"📍 Retrieved from: {c['source_section']}")
         if k["definitions"]:
             st.markdown("**Definitions**")
             for d in k["definitions"]:
                 st.write(f"- **{d['term']}**: {d['definition']}")
+                if d.get("source_section"):
+                    st.caption(f"📍 Retrieved from: {d['source_section']}")
         if k["formulae"]:
             st.markdown("**Formulae**")
             for f in k["formulae"]:

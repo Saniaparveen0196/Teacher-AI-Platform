@@ -105,7 +105,19 @@ def export_teacher_guide_pdf(tkp: dict, output_path: str) -> str:
 
     k = tkp["knowledge"]
 
+    
+    for c in k["concepts"]:
+        story.append(_p(c["name"], "H3Custom"))
+        story.append(_p(c["explanation"]))
+        if c.get("source_section"):
+            story.append(_p(f"Source: {c['source_section']}", "MetaCustom"))
 
+    if k["definitions"]:
+        story.append(_p("Key Definitions", "H2Custom"))
+        for d in k["definitions"]:
+            story.append(_p(f"<b>{d['term']}</b>: {d['definition']}"))
+            if d.get("source_section"):
+                story.append(_p(f"Source: {d['source_section']}", "MetaCustom"))
     if k["formulae"]:
         story.append(_p("Formulae", "H2Custom"))
         for f in k["formulae"]:
